@@ -50,6 +50,10 @@ Execute as migrations e seeders para configurar o banco de dados:
 ```
 php artisan migrate --seed
 ```
+
+#### Logins de teste
+joao.silva@example.com | senha123
+empresateste@example.com | senha123
 ## Estrutura
 ### Estrutura da Aplicação
 Diretórios Principais
@@ -89,6 +93,10 @@ Diretórios Principais
 - **`GET /dashboard`**: Painel do usuário com informações de saldo, transferências enviadas e transferências recebidas.
 
 - **`GET /transfer`**: Formulário para realizar uma tranferência. São solicitados o documento do recebedor e valor a ser enviado.
+
+Documentos teste para envio: 
+123.456.789-00 (CPF)
+12.345.678/0001-99 (CNPJ)
 
 - **`POST /transfer`**: Processa a tranferência. 
 

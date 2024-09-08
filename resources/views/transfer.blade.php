@@ -52,7 +52,10 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">Transferir</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Transferir</button>
+                <a href="{{ route('dashboard') }}" class="btn btn-secondary">Voltar à Home</a>
+            </div>
         </form>
     </div>
 @stop

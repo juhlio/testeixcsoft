@@ -7,6 +7,7 @@ use App\Models\Transactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\SendNotification;
 
 class TransactionController extends Controller
 {
@@ -78,6 +79,9 @@ class TransactionController extends Controller
                 $transaction->save();
             });
 
+            // Enviar notificação para o remetente e destinatário utilizando fila
+            $this->sendNotification($sender, $recipient, $amount, $transaction->id);
+
             return redirect()->back()->with('status', 'Transferência realizada com sucesso! ID da transação: ' . $transaction->id);
         } else {
             // Se não autorizado, alterar o status para 'failed'
@@ -133,9 +137,9 @@ class TransactionController extends Controller
      * @param  float  $amount
      * @return void
      */
-    private function sendNotification($sender, $recipient, $amount)
+    private function sendNotification($sender, $recipient, $amount, $transactionId)
     {
-        // Simulação de envio de notificações
-        // Você pode implementar a lógica para enviar e-mails ou SMS aqui
+        // Despachar a Job SendNotification
+        SendNotification::dispatch($sender, $recipient, $amount, $transactionId);
     }
 }

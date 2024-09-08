@@ -1,66 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Sistema de Pagamento Simplificado
 
-## About Laravel
+Esta aplicação Laravel é um sistema para gerenciar pagamentos entre clientes e lojistas. Permite o cadastro de Pessoas Físicas e Pessoas Jurídicas. E a transfência de saldo.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requisitos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP >= 8.0
+- Laravel >= 11.x
+- Composer
+- Banco de Dados: MySQL
+- Servidor Web: Apache ou Nginx
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## Instalação
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+ git clone https://github.com/juhlio/testeixcsoft.git
 
-### Premium Partners
+```bash
+  cd testeixcsoft
+```
+### Instalando as dependências  
+```  
+  composer install
+``` 
+```  
+  npm install
+``` 
+### Configuração do ambiente
+Copie o arquivo .env.example para um novo arquivo .env e configure suas variáveis de ambiente:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+cp .env.example .env
+```
+Edite o arquivo ```.env``` para configurar a conexão com o banco de dados e outras configurações necessárias.
 
-## Contributing
+### Gerando a chave da aplicação
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Gere a chave de aplicação do Laravel:
+```
+php artisan key:generate
+```
+### Executando Migrations e Seeders
 
-## Code of Conduct
+Execute as migrations e seeders para configurar o banco de dados:
+```
+php artisan migrate --seed
+```
+## Estrutura
+### Estrutura da Aplicação
+Diretórios Principais
+- app/: Contém o código da aplicação, incluindo Controllers, Models, e Services.
+- resources/views/: Contém os arquivos Blade para as views da aplicação.
+- routes/: Contém os arquivos de rotas.
+- public/: Contém os arquivos públicos, como imagens e scripts.
+- config/: Contém os arquivos de configuração da aplicação.
+- database/: Contém migrations, seeders e o banco de dados.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Funcionalidades
+#### Registro de usuários
+- Criar Usuário: Permite registrar um novo usuario.
+- Todo novo usuário inicia com R$ 1000,00 de saldo. 
+- É possivel cadastrar Pessoas Físicas ou Pessoas Jurídicas.
+- Não é possivel cadastrar mais de um usuário com o mesmo documento (CPF ou CNPJ).
+- Não é possível cadastrar mais de um usuário com o mesmo e-mail.
 
-## Security Vulnerabilities
+#### Transferir Dinheiro
+- Permite transferir dinheiro entre usuários.
+- Apenas pessoas físicas podem enviar.
+- Qualquer usuário pode receber dinheiro.
+- Não é possivel enviar um valor maior que o saldo disponível do usuário.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+ 
+### Estrutura das Rotas
 
-## License
+### Rotas de Autenticação
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **`/register`**: Cadastrar um novo usuário.
+- **`/login`**: Autenticar um usuário.
+
+
+#### Rotas de Navegação (Acessadas apenas por usuários logados)
+
+
+- **`GET /dashboard`**: Painel do usuário com informações de saldo, transferências enviadas e transferências recebidas.
+
+- **`GET /transfer`**: Formulário para realizar uma tranferência. São solicitados o documento do recebedor e valor a ser enviado.
+
+- **`POST /transfer`**: Processa a tranferência. 
+
+
+## Controllers
+
+### `RegisterController`
+Gerencia o cadastro de novos usuários.
+
+- **`validator`**: Função que valida as informações enviadas pelo formulário de registro. Verica se o e-mail e documento são validos e inéditos no sistema.
+
+- **`isValidCpfOrCnpj`**: Verifica se o CPF ou CNPJ enviado é válido.
+
+- **`create`**: Registra o novo usuário e adiciona R$ 1000,00 de saldo. 
+
+### `DashboardController`
+
+Gerencia a exibição do Painel do Cliente. 
+
+- **`index`**: Chama a view com o painel do usuário.
+
+### `TransactionController`
+
+- **`consultExternalService`**: Consulta API externa para confirmar se a transação pode ser realizada. Caso o id conste no Endereço externo a transação é autorizada.
+
+- **`sendNotification`**: Envia a confirmação do envio da transação aos usuários envolvidos na tranferência. É usada uma fila de processamento e uma API externa para esse processo.
+
+- **`transfer`**: Função responsável pelo processo de tranferência. Verifica se o tipo de usuário é autorizado a enviar. Verifica também o saldo disponivel de quem vai enviar. Aciona a consulta externa, atualiza as informações no banco de dados e o envio das notificações.
+## Autores
+
+- [@Julio](https://www.github.com/juhlio)
+

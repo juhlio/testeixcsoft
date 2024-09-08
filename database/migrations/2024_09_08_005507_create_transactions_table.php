@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->string('sender_document'); // Documento do remetente
             $table->string('recipient_document'); // Documento do destinatário
             $table->decimal('amount', 10, 2); // Valor da transação com 2 casas decimais
-            $table->string('status'); // Status da transação, e.g., pending, completed, failed
+            $table->string('status')->default('pending'); // Status da transação com valor padrão 'pending'
             $table->timestamps(); // timestamps para created_at e updated_at
 
             // Índices para buscar mais rapidamente

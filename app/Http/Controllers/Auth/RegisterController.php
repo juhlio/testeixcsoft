@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Wallet;
+use App\Models\Wallets;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -84,7 +84,7 @@ class RegisterController extends Controller
         ]);
 
         // Cria a wallet associada ao usuário com saldo inicial de 1000
-        Wallet::create([
+        Wallets::create([
             'user_id' => $user->id,
             'balance' => 1000.00, // Saldo inicial
         ]);

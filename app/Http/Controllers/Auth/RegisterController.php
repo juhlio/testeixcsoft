@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -73,13 +74,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        // Cria o usuário
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'documento' => $data['documento'],
             'tipo' => $data['tipo'],
             'password' => Hash::make($data['password']),
         ]);
+
+        // Cria a wallet associada ao usuário com saldo inicial de 1000
+        Wallet::create([
+            'user_id' => $user->id,
+            'balance' => 1000.00, // Saldo inicial
+        ]);
+
+        return $user;
     }
 
     /**

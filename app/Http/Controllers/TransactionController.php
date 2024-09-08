@@ -28,6 +28,11 @@ class TransactionController extends Controller
      */
     public function transfer(Request $request)
     {
+        // Verificar se o usuário autenticado é "Pessoa Jurídica"
+        if ($request->user()->tipo === 'juridica') {
+            return redirect()->back()->withErrors(['error' => 'Usuários do tipo Pessoa Jurídica não podem realizar transferências.']);
+        }
+
         // Validação dos dados da solicitação
         $validated = $request->validate([
             'recipient_document' => ['required', 'string', 'exists:users,documento'],
@@ -90,35 +95,35 @@ class TransactionController extends Controller
      * @return bool
      */
     private function consultExternalService($transactionId)
-{
-    // URL do serviço externo
-    $url = 'https://66ad1f3cb18f3614e3b478f5.mockapi.io/v1/auth';
+    {
+        // URL do serviço externo
+        $url = 'https://66ad1f3cb18f3614e3b478f5.mockapi.io/v1/auth';
 
-    // Realiza a requisição HTTP GET para o serviço externo
-    $response = Http::get($url);
+        // Realiza a requisição HTTP GET para o serviço externo
+        $response = Http::get($url);
 
-    // Verifica se a resposta foi bem-sucedida
-    if ($response->successful()) {
-        $responseData = $response->json();
+        // Verifica se a resposta foi bem-sucedida
+        if ($response->successful()) {
+            $responseData = $response->json();
 
-        // Verifica se a mensagem de autorização está presente
-        $authorized = false;
-        foreach ($responseData as $item) {
-            if (isset($item['message']) && $item['message'] === 'Autorizado') {
-                $authorized = true;
-                break;
+            // Verifica se a mensagem de autorização está presente
+            $authorized = false;
+            foreach ($responseData as $item) {
+                if (isset($item['message']) && $item['message'] === 'Autorizado') {
+                    $authorized = true;
+                    break;
+                }
+            }
+
+            // Verifica se o ID da transação está na lista de IDs autorizados
+            if ($authorized) {
+                $authorizedIds = array_column($responseData, 'id');
+                return in_array($transactionId, $authorizedIds);
             }
         }
 
-        // Verifica se o ID da transação está na lista de IDs autorizados
-        if ($authorized) {
-            $authorizedIds = array_column($responseData, 'id');
-            return in_array($transactionId, $authorizedIds);
-        }
+        return false;
     }
-
-    return false;
-}
 
     /**
      * Simula o envio de notificações para o remetente e destinatário.
